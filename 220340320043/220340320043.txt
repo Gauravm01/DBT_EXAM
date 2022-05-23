@@ -1,0 +1,225 @@
+SECTION -A
+
+Q NO 1.
+
+create table DEPT(
+DEPTNO INT(2),
+DNAME VARCHAR(15),
+LOC VARCHAR(10)
+);
+
+Insert into DEPT
+(DEPTNO,DNAME,LOC)
+values
+(10,'ACCOUNTING','NEW YORK'),
+(20,'RESEARCH','DALLAS'),
+(30,'SALES','CHICAGO'),
+(40,'OPERATIONS','BOSTON');
+
+SELECT * FROM DEPT;
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
+|     40 | OPERATIONS | BOSTON   |
++--------+------------+----------+
+4 rows in set (0.00 sec)
+
+
+Q NO 2
+
+create table EMP(
+EMPNO int(4),
+ENAME varchar(10),
+JOB	varchar(9),
+HIREDATE date,
+SAL	float(7,2),
+COMM float(7,2),
+DEPTNO int(2)
+);
+
+insert into emp(EMPNO,ENAME,JOB,HIREDATE,SAL,COMM,DEPTNO)
+values
+(7839,'KING','MANAGER','1991-11-17',5000,NULL,10),
+(7698,'BLAKE','CLERK','1981-05-01','2850',NULL,30),
+(7782,'CLARK','MANAGER','1981-06-09',2450,NULL,10),
+(7566,'JONES','CLERK','1981-04-02',2975,NULL,20),
+(7654,'MARTIN','SALESMAN','1981-09-28',1250,1400,30),
+(7499,'ALLEN','SALESMAN','1981-02-20',1600,300,30);
+
+select * from emp;
+
++-------+--------+----------+------------+---------+---------+--------+
+| EMPNO | ENAME  | JOB      | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+--------+----------+------------+---------+---------+--------+
+|  7839 | KING   | MANAGER  | 1991-11-17 | 5000.00 |    NULL |     10 |
+|  7698 | BLAKE  | CLERK    | 1981-05-01 | 2850.00 |    NULL |     30 |
+|  7782 | CLARK  | MANAGER  | 1981-06-09 | 2450.00 |    NULL |     10 |
+|  7566 | JONES  | CLERK    | 1981-04-02 | 2975.00 |    NULL |     20 |
+|  7654 | MARTIN | SALESMAN | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+|  7499 | ALLEN  | SALESMAN | 1981-02-20 | 1600.00 |  300.00 |     30 |
++-------+--------+----------+------------+---------+---------+--------+
+6 rows in set (0.00 sec)
+
+Q NO 3 
+
+mysql> select*from emp where sal between 2500 and 5000;
++-------+-------+---------+------------+---------+------+--------+
+| EMPNO | ENAME | JOB     | HIREDATE   | SAL     | COMM | DEPTNO |
++-------+-------+---------+------------+---------+------+--------+
+|  7839 | KING  | MANAGER | 1991-11-17 | 5000.00 | NULL |     10 |
+|  7698 | BLAKE | CLERK   | 1981-05-01 | 2850.00 | NULL |     30 |
+|  7566 | JONES | CLERK   | 1981-04-02 | 2975.00 | NULL |     20 |
++-------+-------+---------+------------+---------+------+--------+
+3 rows in set (0.00 sec)
+
+Q No 4
+
+mysql> select ename from emp order by ename desc;
++--------+
+| ename  |
++--------+
+| MARTIN |
+| KING   |
+| JONES  |
+| CLARK  |
+| BLAKE  |
+| ALLEN  |
++--------+
+6 rows in set (0.00 sec)
+
+Q NO 5
+mysql> select lower(Job) from emp;
++------------+
+| lower(Job) |
++------------+
+| manager    |
+| clerk      |
+| manager    |
+| clerk      |
+| salesman   |
+| salesman   |
++------------+
+6 rows in set (0.00 sec)
+
+Q NO 6
+mysql> select ename,length(ename) as length from emp;
++--------+--------+
+| ename  | length |
++--------+--------+
+| KING   |      4 |
+| BLAKE  |      5 |
+| CLARK  |      5 |
+| JONES  |      5 |
+| MARTIN |      6 |
+| ALLEN  |      5 |
++--------+--------+
+6 rows in set (0.00 sec)
+
+Q NO 7
+
+mysql> select d.deptno,count(e.deptno) from dept d inner join emp e group by d.deptno;
++--------+-----------------+
+| deptno | count(e.deptno) |
++--------+-----------------+
+|     10 |               6 |
+|     20 |               6 |
+|     30 |               6 |
+|     40 |               6 |
++--------+-----------------+
+4 rows in set (0.00 sec)
+
+Q NO 8
+mysql> select dname,ename  from dept,emp where dept.deptno = emp.deptno;
++------------+--------+
+| dname      | ename  |
++------------+--------+
+| ACCOUNTING | KING   |
+| SALES      | BLAKE  |
+| ACCOUNTING | CLARK  |
+| RESEARCH   | JONES  |
+| SALES      | MARTIN |
+| SALES      | ALLEN  |
++------------+--------+
+6 rows in set (0.00 sec)
+
+Q NO 9
+mysql> select ename,instr(ename,'AR') as position from emp;
++--------+----------+
+| ename  | position |
++--------+----------+
+| KING   |        0 |
+| BLAKE  |        0 |
+| CLARK  |        3 |
+| JONES  |        0 |
+| MARTIN |        2 |
+| ALLEN  |        0 |
++--------+----------+
+6 rows in set (0.00 sec)
+
+
+Q NO 10
+mysql> select ename,sal*0.2 as HRA from emp;
++--------+---------+
+| ename  | HRA     |
++--------+---------+
+| KING   | 1000.00 |
+| BLAKE  |  570.00 |
+| CLARK  |  490.00 |
+| JONES  |  595.00 |
+| MARTIN |  250.00 |
+| ALLEN  |  320.00 |
++--------+---------+
+6 rows in set (0.00 sec)
+
+
+SECTION - 2
+
+Q1 stored Function
+
+delimiter //
+
+create function FUNC1(a int,b int,c int)
+returns boolean
+deterministic
+begin
+	if a+b>c and b+c>a and c+a>b then
+		 return true;
+         else
+          return false;
+          end if;
+	end; //
+    delimiter ;
+    drop function FUNC1;
+    delimiter //
+    create procedure xyz()
+    begin
+		declare x boolean;
+        set x = FUNC1(10,20,30);
+        insert into tempp values(x);
+	end; //
+    delimiter ;
+    drop procedure xyz;
+    
+    call xyz();
+    select * from tempp;
+    create table tempp
+    (x boolean);
+
+	
+	
+	
+Q2 stored procedure
+    
+    delimiter //
+create procedure PROC1(string1 varchar(20),string2 varchar(20)) 
+begin
+		if locate(string1,string2) then
+		insert into temp values('FOUND');
+	else
+		insert into tempp values('NOT FOUND');
+	end if;
+end; //
+delimiter ;
